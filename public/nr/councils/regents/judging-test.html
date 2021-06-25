@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Northreach A&amp;S Judging Certification Test</title>
+<meta name="viewport" content="width=320, initial-scale=1"/>
+<script>
+function addQuestion(text, multipleChoice) {
+  currentQuestion = {"text":text, "multipleChoice":multipleChoice, "answers":[]};
+  questions.push(currentQuestion);
+}
+
+function addAnswer(text, correct) {
+  currentQuestion.answers.push({"text":text, "correct":correct});
+}
+
+function renderQuestions() {
+  var olQuestions = document.getElementById("olQuestions");
+  for(var i=0;i<questions.length;i++) {
+    var strOL = "olQ" + i;
+    olQuestions.innerHTML += "<li><p>" + questions[i].text + "</p><form><ol id='" + strOL + "'></ol></form></li>";
+    var olQuestion = document.getElementById(strOL);
+    for(var j=0;j<questions[i].answers.length;j++) {
+      var inputType = questions[i].multipleChoice ? "checkbox" : "radio";
+      var strID = "Q" + i + "A" + j;
+      olQuestion.innerHTML += "<li id='li" + strID + "'><input id='in" + strID + "' type='" +inputType + "' name='q" + i + "'/><label for='in" + strID + "'>" + questions[i].answers[j].text + "</label></li>";
+    }
+  }
+}
+
+function gradeTest() {
+  var grade = 100;
+  for(var i=0;i<questions.length;i++) {
+    var questionAnswered = false;
+    for(var j=0;j<questions[i].answers.length;j++) {
+      var checkbox = document.getElementById("inQ" + i + "A" + j);
+      checkbox.disabled = true;
+      if(checkbox.checked) {
+        questionAnswered = true;
+      }
+      if(questions[i].multipleChoice) {
+        if(checkbox.checked != questions[i].answers[j].correct) {
+          document.getElementById("liQ" + i + "A" + j).className = "wrong";
+          grade -= 100.0 / (questions.length * questions[i].answers.length);
+        }
+      } else {
+        if(checkbox.checked && !questions[i].answers[j].correct) {
+          document.getElementById("liQ" + i + "A" + j).className = "wrong";
+          grade -= 100.0 / questions.length;
+        }
+      }
+    }
+    if(!questionAnswered) {
+      grade -= 100.0 / questions.length;
+    }
+  }
+  document.getElementById("grade").innerHTML = grade + "% " + (grade >= passPercent ? "Pass" : "Fail");
+  document.getElementById("frmContinue").className = "hidden";
+}
+
+var questions = [];
+var currentQuestion = null;
+var passPercent = 80;
+
+addQuestion("What score counts as “qualifying” for purposes of running for office?", false);
+addAnswer("2.0", false);
+addAnswer("2.5", false);
+addAnswer("3.0", true);
+addAnswer("3.5", false);
+addAnswer("4.0", false);
+
+addQuestion("Which attribute, if lacking, should be most likely to cause an entry to fail?", false);
+addAnswer("Quality", true);
+addAnswer("Difficulty", false);
+addAnswer("Embellishments", false);
+addAnswer("Presentation", false);
+
+addQuestion("An entered tunic has a ring of flowers embroidered around the neckline.  The embroidery is of poor-to-moderate quality.  How should the tunic be rated?", false);
+addAnswer("2.8, because of the low quality of the embroidery.", false);
+addAnswer("3.0, because the difficulty of the embroidery is offset by its low quality.", true);
+addAnswer("3.2, because the addition of embroidery raises the entry’s difficulty.", true);
+
+addQuestion("A food entry does not include a list of ingredients.  How should this affect the score?", false);
+addAnswer("The entry should be disqualified without scoring.", true);
+addAnswer("The entry should be given a 0.5 penalty.", false);
+addAnswer("The entry should be given a 1.0 penalty.", false);
+addAnswer("The entry’s score should not be affected, as the write-up is not part of the entry.", false);
+
+addQuestion("An entry is made entirely from clearly expensive materials, probably costing over $500.  How should the score change?", false);
+addAnswer("With so much money invested, the entry should get a 5.0.", false);
+addAnswer("The quality of work is being judged, not the materials; the score shouldn’t change.", false);
+addAnswer("The entry is improved by the use of those materials, so raise the score by a few tenths.", true);
+
+//addQuestion("");
+//addAnswer("", false);
+
+</script>
+<style>
+  body {
+    background-color: #eeeeee;
+  }
+  ol li {
+    page-break-inside: avoid;
+  }
+  ol ol li {
+    list-style-type: lower-alpha;
+  }
+  label {
+  }
+  #divMain {
+    width: 60em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .center { text-align: center; }
+  .wrong {
+    color: #cc0000;
+  }
+  .hidden {
+    display: none;
+  }
+  @media only screen and (max-width: 60em) {
+    #divMain {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body onload="renderQuestions();">
+  <div id="divMain">
+    <h1 class="center">Northreach A&amp;S Judging Certification Test</h1>
+    <ol id="olQuestions">
+    </ol>
+    <div class="center">
+      <hr>
+      <form id="frmContinue" name="frmContinue">
+        <input type="button" name="btnContinue" value="Grade Test" onclick="gradeTest();">
+      </form>
+      <p id="grade"></p>
+    </div>
+  </div>
+</body>
+</html>

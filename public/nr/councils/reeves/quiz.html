@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Amtgard Version 8.0 Reeves Quiz</title>
+<meta name="viewport" content="width=320, initial-scale=1"/>
+<script>
+function addQuestion(text, type, answer, reference) {
+  questions.push({"text":text, "type":type, "answer":answer, "reference":reference});
+}
+
+function selectQuestion() {
+  document.getElementById("divResultContainer").style.display = "none";
+
+  do {
+    selectedQuestion = Math.floor(Math.random() * questions.length);
+    for(var i=0; i<recentQuestions.length; i++) {
+      if(recentQuestions[i] == selectedQuestion) {
+        selectedQuestion = -1;
+        break;
+      }
+    }
+  } while(selectedQuestion == -1);
+
+  recentQuestions.push(selectedQuestion);
+  if(recentQuestions.length > 20) {
+    recentQuestions.shift();
+  }
+
+  var question = questions[selectedQuestion];
+  document.getElementById("divQuestion").innerHTML = question.text;
+
+  var txtTrue = "True";
+  var txtFalse = "False";
+  if("y" == question.type) {
+    txtTrue = "Yes";
+    txtFalse = "No";
+  }
+  document.forms["frmAnswer"]["btnTrue"].value = txtTrue;
+  document.forms["frmAnswer"]["btnFalse"].value = txtFalse;
+}
+
+function answerQuestion(answer) {
+  var question = questions[selectedQuestion];
+  var result = question.answer == answer ? "Correct" : "Incorrect";
+
+  if(question.reference != undefined)
+    result += "<br/><br/>" + question.reference;
+
+  document.getElementById("divResult").innerHTML = result;
+  document.getElementById("divResultContainer").style.display = "block";
+}
+
+var questions = [];
+var selectedQuestion = 0;
+var recentQuestions = [];
+
+addQuestion("All arrows are Armor Breaking.", "t", true, "Arrows, p. 17; Specialty Arrows, p. 51");
+addQuestion("Only specialty arrows are Armor Breaking.", "t", false, "Arrows, p. 17; Specialty Arrows, p. 51");
+addQuestion("A thrust only weapon must have at least 6 inches of Strike-Legal padding.", "t", true, "Weapon Definitions, Thrust/Stab, p. 15");
+addQuestion("A thrust only weapon must have at least 12 inches of Strike-Legal padding.", "t", false, "Weapon Definitions, Thrust/Stab, p. 15");
+addQuestion("Projectiles affect all targets struck while in motion.", "t", true, "Projectiles, p. 16");
+addQuestion("Projectiles affect only the first target struck while in motion.", "t", false, "Projectiles, p. 16");
+addQuestion("A class sash must be at least 2 inches wide.", "t", true, "Other Equipment, Sashes, p. 19");
+addQuestion("A class sash must be at least 3 inches wide.", "t", false, "Other Equipment, Sashes, p. 19");
+addQuestion("A class sash must be at least 4 inches wide.", "t", false, "Other Equipment, Sashes, p. 19");
+addQuestion("An Enchantment Strip must have at least 6 inches of visible drape.", "t", true, "Other Equipment, Strips, p. 19");
+addQuestion("An Enchantment Strip must have at least 9 inches of visible drape.", "t", false, "Other Equipment, Strips, p. 19");
+addQuestion("An Enchantment Strip must have at least 12 inches of visible drape.", "t", false, "Other Equipment, Strips, p. 19");
+addQuestion("A broken weapon can be repaired by spending 60 seconds at base.", "t", true, "Battlegame Components, Base, p. 24");
+addQuestion("A broken weapon can be repaired by spending 30 seconds at base.", "t", false, "Battlegame Components, Base, p. 24");
+addQuestion("The audible components of a Chant may be up to, but no more than, 2 seconds apart.", "t", false, "Chant, p. 48");
+addQuestion("The audible components of a Chant may be up to, but no more than, 5 seconds apart.", "t", true, "Chant, p. 48");
+addQuestion("The audible components of a Chant are only required to be audible to 20 feet.", "t", false, "Chant, p. 48");
+addQuestion("The audible components of a Chant are only required to be audible to 50 feet.", "t", true, "Chant, p. 48");
+addQuestion("The audible components of a Chant are only required to be audible to 100 feet.", "t", false, "Chant, p. 48");
+addQuestion("A Persistent Enchantment is removed when a player dies.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A Persistent Enchantment is removed when a dead player voluntarily moves.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A Persistent Enchantment is removed when a player voluntarily takes a death.", "t", true, "Enchantments, pp. 48-49");
+addQuestion("A Persistent Enchantment is removed when a dead player is returned to life without respawning.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A Persistent Enchantment is removed when a dead player returns to life by respawning.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A non-Persistent Enchantment is removed when a player dies.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A non-Persistent Enchantment is removed when a dead player voluntarily moves.", "t", true, "Enchantments, pp. 48-49");
+addQuestion("A non-Persistent Enchantment is removed when a player voluntarily takes a death.", "t", true, "Enchantments, pp. 48-49");
+addQuestion("A non-Persistent Enchantment is removed when a dead player is returned to life without respawning.", "t", false, "Enchantments, pp. 48-49");
+addQuestion("A non-Persistent Enchantment is removed when a dead player returns to life by respawning.", "t", true, "Enchantments, pp. 48-49");
+addQuestion("Is a player's incantation interrupted if they lose sight of their target?", "y", false, "Incantation, p. 49");
+addQuestion("Is a player's incantation interrupted if they move their feet?", "y", true, "Incantation, p. 49");
+addQuestion("Is a player's incantation interrupted if they leave out a word?", "y", true, "Incantation, p. 49");
+addQuestion("Is a player's incantation interrupted if they pause for longer than two seconds?", "y", true, "Incantation, p. 49");
+addQuestion("Can abilities be charged while Insubstantial?", "y", true, "States Defined, pp. 51-52");
+addQuestion("Can abilities be charged while Stopped?", "y", true, "States Defined, pp. 51-52");
+addQuestion("Can abilities be charged while Frozen?", "y", false, "States Defined, pp. 51-52");
+addQuestion("Can abilities be charged while Cursed?", "y", true, "States Defined, pp. 51-52");
+addQuestion("Can abilities be charged while Suppressed?", "y", true, "States Defined, pp. 51-52");
+addQuestion("Can abilities be charged while Stunned?", "y", false, "States Defined, pp. 51-52");
+addQuestion("Incantations for Abilities listed as Magical (m) require a free hand.", "t", true, "Incantation, p. 49");
+addQuestion("Incantations for Abilities listed as Extraordinary (ex) require a free hand.", "t", false, "Ability, p. 48");
+
+</script>
+<style>
+  body {
+    background-color: #eeeeee;
+  }
+  div {
+    text-align: center;
+  }
+  #divQuestion {
+    border: 1px solid #990000;
+    margin: 1em;
+    padding: 1em;
+  }
+  #divResult {
+    border: 1px solid #990000;
+    margin: 1em;
+    padding: 1em;
+  }
+</style>
+</head>
+<body onload="selectQuestion();">
+  <div id="divQuestion" class="question">
+    Question goes here.
+  </div>
+  <div>
+    <form name="frmAnswer">
+      <input type="button" name="btnTrue" value="True" onclick="answerQuestion(true);">
+      <input type="button" name="btnFalse" value="False" onclick="answerQuestion(false);">
+    </form>
+  </div>
+  <div id="divResultContainer">
+    <div id="divResult">
+    </div>
+    <form name="frmContinue">
+      <input type="button" name="btnContinue" value="Continue" onclick="selectQuestion();">
+    </form>
+  </div>
+</body>
+</html>

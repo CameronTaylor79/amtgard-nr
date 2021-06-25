@@ -7,8 +7,14 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      { "source": "/tests/judging", "destination": "/nr/councils/regents/judging-test.html" },
-      { "source": "/tests/reeve-quiz", "destination": "/nr/councils/reeves/quiz.html" }
+      {
+        "source": "/tests/judging",
+        "destination": "/nr/councils/regents/judging-test.html"
+      },
+      {
+        "source": "/tests/reeve-quiz",
+        "destination": "/nr/councils/reeves/quiz.html"
+      }
     ]
   }
 }
